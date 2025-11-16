@@ -1,0 +1,25 @@
+# RaindropClarity dataset (day configuration)
+# From HuggingFace: https://huggingface.co/datasets/JacobLinCool/RaindropClarity
+
+defaults:
+  - degradation: no_degradation
+  - noise: no_noise
+
+name: huggingface
+cond: False
+x_flip: False
+
+# HuggingFace dataset parameters
+hf_dataset_name: JacobLinCool/RaindropClarity
+hf_config: day
+hf_split: train
+
+# Image field mapping
+# 'clear': background focused image (clean)
+# 'drop': raindrop-focused image (corrupt)
+# 'blur': raindrop-focused image without raindrop
+clean_field: clear
+corrupt_field: drop
+
+# Optional: limit number of images for testing
+# max_imgs: 1000

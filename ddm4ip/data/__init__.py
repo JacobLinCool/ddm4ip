@@ -1,6 +1,7 @@
 from .patch_dataset import PatchDataset
 from .base import Batch, DatasetType, init_dataloader, init_dataset
 from .image_folder_dataset import ZipFileDataset
+from .huggingface_dataset import HuggingFaceDataset
 
 __all__ = [
     "Batch",
@@ -9,4 +10,5 @@ __all__ = [
     "init_dataset",
     "ZipFileDataset",
     "PatchDataset",
+    "HuggingFaceDataset",
 ]
