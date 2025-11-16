@@ -195,13 +195,15 @@ def init_dataset(cfg: DictConfig, split: Datasplit, is_paired: bool):
         data_path = dset_cfg.get("path", dset_cfg.get(path_keys[split]))
     else:
         data_path = dset_cfg.get(path_keys[split])
-    if data_path is None:
+    
+    dset_name = dset_cfg["name"]
+    # HuggingFace datasets don't require a path
+    if data_path is None and dset_name != 'huggingface':
         raise RuntimeError(
             f"{split.name} dataset configuration has no path specified."
         )
     perturbation = init_perturbation(dset_cfg.degradation, dset_cfg.noise)
 
-    dset_name = dset_cfg["name"]
     shuffle_clean = split == Datasplit.TRAIN and not is_paired
     if dset_name == 'zip':
         from .image_folder_dataset import ZipFileDataset
@@ -224,6 +226,15 @@ def init_dataset(cfg: DictConfig, split: Datasplit, is_paired: bool):
     elif dset_name == 'simple_patch':
         from .simple_patch_dataset import SimplePatchDataset
         return SimplePatchDataset(
+            data_path,
+            degradation=perturbation,
+            shuffle_clean=shuffle_clean,
+            dset_cfg=dset_cfg,
+            split=split,
+        )
+    elif dset_name == 'huggingface':
+        from .huggingface_dataset import HuggingFaceDataset
+        return HuggingFaceDataset(
             data_path,
             degradation=perturbation,
             shuffle_clean=shuffle_clean,
